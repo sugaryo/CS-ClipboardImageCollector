@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // アセンブリに関する一般情報は以下の属性セットをとおして制御されます。
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
-[assembly: AssemblyTitle( "ClipboardImageCollector" )]
+[assembly: AssemblyTitle( "ClipboardImageCollectForm" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
-[assembly: AssemblyProduct( "ClipboardImageCollector" )]
+[assembly: AssemblyProduct( "ClipboardImageCollectForm" )]
 [assembly: AssemblyCopyright( "Copyright ©  2020" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible( false )]
 
 // このプロジェクトが COM に公開される場合、次の GUID が typelib の ID になります
-[assembly: Guid( "64c78fdf-2b0b-4ea9-8fd6-b7bb2569ab62" )]
+[assembly: Guid( "1b955d28-033c-4c63-9039-a449e30bddcd" )]
 
 // アセンブリのバージョン情報は次の 4 つの値で構成されています:
 //
