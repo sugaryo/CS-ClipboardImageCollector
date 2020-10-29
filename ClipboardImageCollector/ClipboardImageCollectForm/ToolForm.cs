@@ -127,9 +127,7 @@ namespace ClipboardImageCollectForm
             // jpeg エンコーダの取得
             var encoder = GetEncoder( ImageFormat.Jpeg );
 
-#warning quality はリテラルじゃなく app.config にしておきたい。
-            // jpeg エンコードパラメータの設定
-            long quality = 90;
+            long quality = Jpeg.Default.Quality;
             var parameters = new EncoderParameters( 1 );
             parameters.Param[0] = new EncoderParameter( Encoder.Quality, quality );
 
