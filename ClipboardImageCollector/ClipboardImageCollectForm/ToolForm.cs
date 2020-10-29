@@ -100,7 +100,7 @@ namespace ClipboardImageCollectForm
 
             // 秒までのタイムスタンプと、GUIDベース（UUIDv4相当）で生成したランダムIDでファイル名にしとく。
             string id = System.Guid.NewGuid().ToString( "N" ).Substring( 0, 6 );
-            string filename = DateTime.Now.ToString( "yyyyMMdd_HHmmss_" ) + id + ".jpg";
+            string filename = DateTime.Now.ToString( "yyyyMMdd_HHmmss_fff" ) + id + ".jpg";
 
             string path = Path.Combine( dir, filename );
 
