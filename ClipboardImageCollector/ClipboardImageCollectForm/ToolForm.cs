@@ -27,26 +27,57 @@ namespace ClipboardImageCollectForm
 
         private void ToolForm_Load(object sender, EventArgs e)
         {
+            // メニュー部分を生成する
+            #region メニュー部分生成
+            {
+                var menu = new MenuStrip();
+
+                var item = new ToolStripMenuItem();
+                item.Text = "最前面に表示";
+                item.Click += ( x, _ )=> { 
+                    this.TopMost = !this.TopMost;
+                    item.Text = this.TopMost ? "最前面に表示 ✅" : "最前面に表示";
+                };
+                menu.Items.Add( item );
+
+                this.Controls.Add( menu );
+            }
+            #endregion
+
+            // JPEG保存クォリティ
+            #region JPEG保存クォリティ
+            {
+                this.Log( "jpeg quality." );
+                this.Log( "  - " + Jpeg.Default.Quality );
+            }
+            #endregion
+
             // 画面をロードした時に save フォルダを用意しておく。
-            string exe = Application.ExecutablePath;
-            string dir = Path.Combine( Directory.GetParent( exe ).FullName, "save" );
-
-            this.Log( "execute." );
-            this.Log( "  - " + exe );
-
-            this.Log( "save folder." );
-            this.Log( "  - " + dir );
-
-            DirectoryInfo di = new DirectoryInfo( dir );
-            if ( !di.Exists )
+            #region saveフォルダの作成
             {
-                di.Create();
-                this.Log( "  - create." );
+#warning デフォルトで相対 /save でいいとして、後で app.config で出力先を指定出来るようにしたいね。
+                string exe = Application.ExecutablePath;
+                string dir = Path.Combine( Directory.GetParent( exe ).FullName, "save" );
+
+                this.Log( "exe." );
+                this.Log( "  - " + exe );
+
+                this.Log( "save folder." );
+                this.Log( "  - " + dir );
+
+                DirectoryInfo di = new DirectoryInfo( dir );
+                if ( !di.Exists )
+                {
+                    di.Create();
+                    this.Log( "  - folder created." );
+                }
+                else
+                {
+                    this.Log( "  - folder exists." );
+                }
             }
-            else
-            {
-                this.Log( "  - exists." );
-            }
+            #endregion
+
             this.Log( "load." );
         }
         #endregion
