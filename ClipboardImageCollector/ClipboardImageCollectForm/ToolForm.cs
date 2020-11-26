@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
 using Encoder = System.Drawing.Imaging.Encoder;
 using System.IO;
+using System.Threading;
 
 namespace ClipboardImageCollectForm
 {
@@ -93,7 +94,7 @@ namespace ClipboardImageCollectForm
                 {
                     this.OnClipboardChanged();
                 }
-                catch ( Exception ex)
+                catch ( Exception ex )
                 {
                     this.Log( "[ERROR] " + ex.Message );
                     this.Log( ex.StackTrace );
@@ -111,8 +112,7 @@ namespace ClipboardImageCollectForm
                 // 画像が入っている場合、保存する。
                 this.Log( "WM_CLIPBOARDUPDATE : image." );
 
-                var img = Clipboard.GetImage();
-
+                var img = this.GetClipboardImage();
                 string path = this.CreateUniquePath();
                 this.SaveJpegImage( img, path );
             }
@@ -121,6 +121,24 @@ namespace ClipboardImageCollectForm
                 // skip.
                 this.Log( "WM_CLIPBOARDUPDATE" );
             }
+        }
+
+        private Image GetClipboardImage()
+        {
+            var img = Clipboard.GetImage();
+            if ( null != img ) return img;
+
+            this.Log( "[warn] Clipboard.GetImage() null." );
+
+            // 稀にContainsImageなのにGetImageでnullが返ってくるので、
+            // 一瞬待ってから１回だけリトライする
+            Thread.Sleep( 100 ); // 0.1秒で十分だよなぁ？
+            if ( null != img ) return img;
+
+            this.Log( "[error] Clipboard.GetImage() null." );
+
+            // 流石にリトライしてなお取れないならもうエラーにする。
+            throw new Exception( "ClipboardからImageが取得できませんでした。" );
         }
 
         private string CreateUniquePath(int retry = 2)
