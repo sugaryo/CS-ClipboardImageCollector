@@ -198,12 +198,26 @@ namespace ClipboardImageCollectForm
         }
         #endregion
 
+        private const int LOG_LIMMIT_LEN = 5000;
+
         private void Log(string msg)
         {
             string timestamp = $"[{DateTime.Now.ToString( "HH:mm:ss" )}] ";
+
+            // リミット制御
+            if ( LOG_LIMMIT_LEN < this.txtConsole.Text.Length )
+            {
+                string sysmsg = "[info] clear console text.";
+                Console.WriteLine( timestamp + sysmsg );
+                this.txtConsole.Text = timestamp + sysmsg + "\r\n";
+            }
+
+            // メッセージ出力
             Console.WriteLine( timestamp + msg );
             this.txtConsole.Text += timestamp + msg + "\r\n";
+            
 
+            // TextBoxのスクロール
             this.txtConsole.Select( this.txtConsole.Text.Length, 0 );
             this.txtConsole.ScrollToCaret();
         }
