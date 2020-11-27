@@ -45,13 +45,6 @@ namespace ClipboardImageCollectForm
             }
             #endregion
 
-            // JPEG保存クォリティ
-            #region JPEG保存クォリティ
-            {
-                this.Log( "jpeg quality." );
-                this.Log( "  - " + Jpeg.Default.Quality );
-            }
-            #endregion
 
             // 画面をロードした時に save フォルダを用意しておく。
             #region saveフォルダの作成
@@ -114,7 +107,7 @@ namespace ClipboardImageCollectForm
 
                 var img = this.GetClipboardImage();
                 string path = this.CreateUniquePath();
-                this.SaveJpegImage( img, path );
+                this.SaveImage( img, path );
             }
             else
             {
@@ -149,7 +142,7 @@ namespace ClipboardImageCollectForm
 
             // 秒までのタイムスタンプと、GUIDベース（UUIDv4相当）で生成したランダムIDでファイル名にしとく。
             string id = System.Guid.NewGuid().ToString( "N" ).Substring( 0, 6 );
-            string filename = DateTime.Now.ToString( "yyyyMMdd_HHmmss_fff" ) + id + ".jpg";
+            string filename = DateTime.Now.ToString( "yyyyMMdd_HHmmss_fff" ) + id + ".png";
 
             string path = Path.Combine( dir, filename );
 
@@ -171,17 +164,8 @@ namespace ClipboardImageCollectForm
             }
         }
 
-        private void SaveJpegImage(Image img, string path)
+        private void SaveImage(Image img, string path)
         {
-            // jpeg エンコーダの取得
-            var encoder = GetEncoder( ImageFormat.Jpeg );
-
-            long quality = Jpeg.Default.Quality;
-            var parameters = new EncoderParameters( 1 );
-            parameters.Param[0] = new EncoderParameter( Encoder.Quality, quality );
-
-
-            
             // 直接img.saveするとGDI+汎用エラー（詳細不明）が発生するので、一旦Bitmapに落としてから保存する。
             var dst = new Bitmap( img.Size.Width, img.Size.Height );
             using ( var src = new Bitmap( img ) )
@@ -194,7 +178,7 @@ namespace ClipboardImageCollectForm
                 }
             }
 
-            dst.Save( path, encoder, parameters );
+            dst.Save( path, ImageFormat.Png );
             this.Log( "save image." );
             this.Log( $"  - size : {img.Size}" );
             this.Log( $"  - path : {path}" );
