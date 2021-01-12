@@ -12,6 +12,7 @@ using System.Drawing.Imaging;
 using Encoder = System.Drawing.Imaging.Encoder;
 using System.IO;
 using System.Threading;
+using WpfLogComponent;
 
 namespace ClipboardImageCollectForm
 {
@@ -19,20 +20,28 @@ namespace ClipboardImageCollectForm
     {
         private const int WM_CLIPBOARDUPDATE = 0x31D;
 
+        private readonly LogContainer logger;
+
 
         #region ctor / Load
         public ToolForm()
         {
             InitializeComponent();
+
+            this.logger = new LogContainer();
         }
 
         private void ToolForm_Load(object sender, EventArgs e)
         {
-            // メニュー部分を生成する
-            #region メニュー部分生成
-            {
-                var menu = new MenuStrip();
+            // WPF ElementHost
+            this.wpfElementHost.Child = this.logger.View;
 
+
+            // メニュー部分を生成する
+            var menu = new MenuStrip();
+            this.Controls.Add( menu );
+            #region TopMost メニュー
+            {
                 var item = new ToolStripMenuItem();
                 item.Text = "最前面に表示";
                 item.Click += ( x, _ )=> { 
@@ -40,12 +49,22 @@ namespace ClipboardImageCollectForm
                     item.Text = this.TopMost ? "最前面に表示 ✅" : "最前面に表示";
                 };
                 menu.Items.Add( item );
-
-                this.Controls.Add( menu );
             }
             #endregion
 
-
+            #region Clear log メニュー
+            {
+                var item = new ToolStripMenuItem();
+                item.Text = "ログ消去";
+                item.Click += (x, _) => {
+                    this.logger.Clear();
+                };
+                menu.Items.Add( item );
+            }
+            #endregion
+        }
+        private void ToolForm_Shown(object sender, EventArgs e)
+        {
             // 画面をロードした時に save フォルダを用意しておく。
             #region saveフォルダの作成
             {
@@ -53,31 +72,26 @@ namespace ClipboardImageCollectForm
                 string exe = Application.ExecutablePath;
                 string dir = Path.Combine( Directory.GetParent( exe ).FullName, "save" );
 
-                this.Log( "exe." );
-                this.Log( "  - " + exe );
 
-                this.Log( "save folder." );
-                this.Log( "  - " + dir );
+                this.Log( LogType.Info, $@"exe:
+- {exe}" );
+                this.Log( LogType.Info, $@"folder:
+- {dir}" );
 
                 DirectoryInfo di = new DirectoryInfo( dir );
                 if ( !di.Exists )
                 {
                     di.Create();
-                    this.Log( "  - folder created." );
-                }
-                else
-                {
-                    this.Log( "  - folder exists." );
+                    this.Log( LogType.Info, "folder created." );
                 }
             }
             #endregion
-
-            this.Log( "load." );
         }
         #endregion
 
 
         // Window Proc.
+        #region override WndProc
         protected override void WndProc(ref Message m)
         {
             // 参考実装
@@ -89,13 +103,15 @@ namespace ClipboardImageCollectForm
                 }
                 catch ( Exception ex )
                 {
-                    this.Log( "[ERROR] " + ex.Message );
-                    this.Log( ex.StackTrace );
+                    this.Log( LogType.Error, ex.Message );
+                    this.Log( LogType.Error, ex.StackTrace );
                 }
             }
 
             base.WndProc( ref m );
         }
+        #endregion
+
 
         #region OnClipboardChanged
         private void OnClipboardChanged()
@@ -103,7 +119,7 @@ namespace ClipboardImageCollectForm
             if ( Clipboard.ContainsImage() )
             {
                 // 画像が入っている場合、保存する。
-                this.Log( "WM_CLIPBOARDUPDATE : image." );
+                this.Log( LogType.Info, "WM_CLIPBOARDUPDATE image." );
 
                 var img = this.GetClipboardImage();
                 string path = this.CreateUniquePath();
@@ -112,7 +128,7 @@ namespace ClipboardImageCollectForm
             else
             {
                 // skip.
-                this.Log( "WM_CLIPBOARDUPDATE" );
+                this.Log( LogType.Info, "WM_CLIPBOARDUPDATE" );
             }
         }
 
@@ -121,14 +137,15 @@ namespace ClipboardImageCollectForm
             var img = Clipboard.GetImage();
             if ( null != img ) return img;
 
-            this.Log( "[warn] Clipboard.GetImage() null." );
+            this.Log( LogType.Warn, "Clipboard.GetImage() null." );
 
             // 稀にContainsImageなのにGetImageでnullが返ってくるので、
             // 一瞬待ってから１回だけリトライする
             Thread.Sleep( 100 ); // 0.1秒で十分だよなぁ？
+            img = Clipboard.GetImage(); // 取り直し
             if ( null != img ) return img;
 
-            this.Log( "[error] Clipboard.GetImage() null." );
+            this.Log( LogType.Error, "Clipboard.GetImage() null." );
 
             // 流石にリトライしてなお取れないならもうエラーにする。
             throw new Exception( "ClipboardからImageが取得できませんでした。" );
@@ -149,14 +166,12 @@ namespace ClipboardImageCollectForm
             // 衝突しなければファイル名を返す。
             if ( !File.Exists( path ) )
             {
-                this.Log( "save filename." );
-                this.Log( $"  - {filename}" );
                 return path;
             }
             // 万一衝突したらリトライする。（流石に連発は有り得ないはず）
             else
             {
-                this.Log( "retry." );
+                this.Log( LogType.Warn, "retry ( save filename collision )." );
 
                 if ( retry <= 0 ) throw new Exception( "保存ファイル名が尽く衝突してるので無理無理カタツ無理。" );
 
@@ -179,9 +194,9 @@ namespace ClipboardImageCollectForm
             }
 
             dst.Save( path, ImageFormat.Png );
-            this.Log( "save image." );
-            this.Log( $"  - size : {img.Size}" );
-            this.Log( $"  - path : {path}" );
+            this.Log( LogType.Info, $@"success clipboard image save:
+- size : {img.Size}
+- file : {Path.GetFileName(path)}" );
         }
 
 
@@ -200,28 +215,19 @@ namespace ClipboardImageCollectForm
         }
         #endregion
 
-        private const int LOG_LIMMIT_LEN = 5000;
 
-        private void Log(string msg)
+
+        private const int LOG_LIMMIT_LEN = 20;
+
+        private void Log(LogType type, string message)
         {
-            string timestamp = $"[{DateTime.Now.ToString( "HH:mm:ss" )}] ";
+            this.logger.Push( type, message );
 
             // リミット制御
-            if ( LOG_LIMMIT_LEN < this.txtConsole.Text.Length )
+            if ( LOG_LIMMIT_LEN < this.logger.Count )
             {
-                string sysmsg = "[info] clear console text.";
-                Console.WriteLine( timestamp + sysmsg );
-                this.txtConsole.Text = timestamp + sysmsg + "\r\n";
+                this.logger.Pop();
             }
-
-            // メッセージ出力
-            Console.WriteLine( timestamp + msg );
-            this.txtConsole.Text += timestamp + msg + "\r\n";
-            
-
-            // TextBoxのスクロール
-            this.txtConsole.Select( this.txtConsole.Text.Length, 0 );
-            this.txtConsole.ScrollToCaret();
         }
     }
 }

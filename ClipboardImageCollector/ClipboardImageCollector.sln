@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardImageCollectForm", "ClipboardImageCollectForm\ClipboardImageCollectForm.csproj", "{1B955D28-033C-4C63-9039-A449E30BDDCD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfLogComponent", "WpfLogComponent\WpfLogComponent.csproj", "{FEB64544-1D63-4E90-A3CC-DE52A8E4B53C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{1B955D28-033C-4C63-9039-A449E30BDDCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B955D28-033C-4C63-9039-A449E30BDDCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B955D28-033C-4C63-9039-A449E30BDDCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEB64544-1D63-4E90-A3CC-DE52A8E4B53C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEB64544-1D63-4E90-A3CC-DE52A8E4B53C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEB64544-1D63-4E90-A3CC-DE52A8E4B53C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEB64544-1D63-4E90-A3CC-DE52A8E4B53C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

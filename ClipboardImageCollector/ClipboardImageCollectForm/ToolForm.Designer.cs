@@ -28,40 +28,51 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtConsole = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.wpfElementHost = new System.Windows.Forms.Integration.ElementHost();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // txtConsole
+            // panel1
             // 
-            this.txtConsole.BackColor = System.Drawing.Color.DarkSlateGray;
-            this.txtConsole.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtConsole.Font = new System.Drawing.Font("ＭＳ ゴシック", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.txtConsole.ForeColor = System.Drawing.Color.Azure;
-            this.txtConsole.Location = new System.Drawing.Point(0, 0);
-            this.txtConsole.Multiline = true;
-            this.txtConsole.Name = "txtConsole";
-            this.txtConsole.ReadOnly = true;
-            this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtConsole.Size = new System.Drawing.Size(800, 450);
-            this.txtConsole.TabIndex = 0;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.wpfElementHost);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(800, 450);
+            this.panel1.TabIndex = 0;
+            // 
+            // wpfElementHost
+            // 
+            this.wpfElementHost.BackColor = System.Drawing.Color.Black;
+            this.wpfElementHost.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.wpfElementHost.Location = new System.Drawing.Point(0, 0);
+            this.wpfElementHost.Name = "wpfElementHost";
+            this.wpfElementHost.Size = new System.Drawing.Size(798, 448);
+            this.wpfElementHost.TabIndex = 0;
+            this.wpfElementHost.Text = "elementHost1";
+            this.wpfElementHost.Child = null;
             // 
             // ToolForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.txtConsole);
+            this.Controls.Add(this.panel1);
             this.Name = "ToolForm";
             this.Text = "clipboard image collector";
             this.Load += new System.EventHandler(this.ToolForm_Load);
+            this.Shown += new System.EventHandler(this.ToolForm_Shown);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtConsole;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Integration.ElementHost wpfElementHost;
     }
 }
 

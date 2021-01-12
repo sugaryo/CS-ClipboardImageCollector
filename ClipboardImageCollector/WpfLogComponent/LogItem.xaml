@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="WpfLogComponent.LogItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfLogComponent"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Label x:Name="LabelTimestamp" Content="[hh:mm:ss]" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}"
+                FontFamily="MS Gothic" Margin="0,5,0,0"/>
+        <Label x:Name="LabelLogType" Content="[log-type]" HorizontalAlignment="Left" Margin="0,22,0,0" VerticalAlignment="Top" Foreground="Red"
+                FontFamily="MS Gothic"/>
+        <TextBlock x:Name="TextMessage" HorizontalAlignment="Left" Margin="80,5,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="20" Foreground="#FF89FFCB"
+                   FontFamily="MS Gothic"/>
+
+    </Grid>
+</UserControl>
