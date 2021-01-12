@@ -28,6 +28,7 @@ namespace WpfLogComponent
         public void Push(LogType type, string message)
         {
             Panel.Children.Add( new LogItem( type, message ) );
+            this.View.ScrollToEnd();
         }
 
         public void Pop()
