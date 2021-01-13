@@ -119,16 +119,9 @@ namespace ClipboardImageCollectForm
             if ( Clipboard.ContainsImage() )
             {
                 // 画像が入っている場合、保存する。
-                this.Log( LogType.Info, "WM_CLIPBOARDUPDATE image." );
-
                 var img = this.GetClipboardImage();
                 string path = this.CreateUniquePath();
                 this.SaveImage( img, path );
-            }
-            else
-            {
-                // skip.
-                this.Log( LogType.Info, "WM_CLIPBOARDUPDATE" );
             }
         }
 
