@@ -11,8 +11,8 @@
                 FontFamily="MS Gothic" Margin="0,5,0,0"/>
         <Label x:Name="LabelLogType" Content="[log-type]" HorizontalAlignment="Left" Margin="0,22,0,0" VerticalAlignment="Top" Foreground="Red"
                 FontFamily="MS Gothic"/>
-        <TextBlock x:Name="TextMessage" HorizontalAlignment="Left" Margin="80,5,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="20" Foreground="#FF89FFCB"
-                   FontFamily="MS Gothic"/>
+        <TextBlock x:Name="TextMessage" HorizontalAlignment="Left" Margin="80,9,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="16" Foreground="#FF89FFCB"
+                   FontFamily="MS Gothic" FontWeight="Bold"/>
 
     </Grid>
 </UserControl>
