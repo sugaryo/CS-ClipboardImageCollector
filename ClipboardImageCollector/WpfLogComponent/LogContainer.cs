@@ -43,11 +43,19 @@ namespace WpfLogComponent
         }
         #endregion
 
+        public void ScrollToEnd()
+        {
+            timer.Start();
+        }
+
+        #region Push
         public void Push(LogType type, string message)
         {
             Panel.Children.Add( new LogItem( type, message ) );
         }
+        #endregion
 
+        #region Pop
         public void Pop()
         {
             if ( 0 != this.Panel.Children.Count )
@@ -55,29 +63,13 @@ namespace WpfLogComponent
                 this.Panel.Children.RemoveAt( 0 );
             }
         }
+        #endregion
 
-        public void ScrollToEnd()
-        {
-            if ( this.View.VerticalOffset < this.View.ScrollableHeight )
-            {
-                double d = this.View.ScrollableHeight - this.View.VerticalOffset;
-
-                // 末尾までの差分が少ない場合はタイマー使わずBottomに直行させる。
-                if ( d < 10 )
-                {
-                    this.View.ScrollToBottom();
-                }
-                // ある程度距離がある場合はタイマーで動かして疑似アニメーション。
-                else
-                {
-                    timer.Start();
-                }
-            }
-        }
-
+        #region Clear
         public void Clear()
         {
             this.Panel.Children.Clear();
         }
+        #endregion
     }
 }
