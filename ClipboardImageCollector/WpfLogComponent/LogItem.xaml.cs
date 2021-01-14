@@ -27,12 +27,13 @@ namespace WpfLogComponent
             this.LabelTimestamp.Content = DateTime.Now.ToString();
         }
 
-        public LogItem(LogType type, string message)
+        public LogItem(LogType type, string message, string details)
         {
             InitializeComponent();
 
             this.LabelTimestamp.Content = DateTime.Now.ToString( "HH:mm:ss" );
             this.TextMessage.Text = message;
+            this.TextDetails.Text = details ?? "";
             switch ( type )
             {
                 case LogType.Info:

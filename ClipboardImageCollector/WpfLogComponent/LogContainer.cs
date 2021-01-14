@@ -51,7 +51,11 @@ namespace WpfLogComponent
         #region Push
         public void Push(LogType type, string message)
         {
-            Panel.Children.Add( new LogItem( type, message ) );
+            Panel.Children.Add( new LogItem( type, message, "" ) );
+        }
+        public void Push(LogType type, string message, string details)
+        {
+            Panel.Children.Add( new LogItem( type, message, details ) );
         }
         #endregion
 

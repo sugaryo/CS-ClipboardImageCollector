@@ -99,8 +99,7 @@ namespace ClipboardImageCollectForm
             {
 #warning デフォルトで相対 /save でいいとして、後で app.config で出力先を指定出来るようにしたいね。
 
-                this.Log( LogType.Info, $@"folder:
-- {this.SaveFolder}" );
+                this.Log( LogType.Info, "folder:", $"- {this.SaveFolder}" );
 
                 DirectoryInfo di = new DirectoryInfo( this.SaveFolder );
                 if ( !di.Exists )
@@ -127,8 +126,7 @@ namespace ClipboardImageCollectForm
                 }
                 catch ( Exception ex )
                 {
-                    this.Log( LogType.Error, ex.Message );
-                    this.Log( LogType.Error, ex.StackTrace );
+                    this.Log( LogType.Error, ex.Message, ex.StackTrace );
                 }
             }
 
@@ -211,8 +209,8 @@ namespace ClipboardImageCollectForm
             }
 
             dst.Save( path, ImageFormat.Png );
-            this.Log( LogType.Info, $@"success clipboard image save:
-- size : {img.Size}
+            this.Log( LogType.Info, "success clipboard image save:",
+$@"- size : {img.Size}
 - file : {Path.GetFileName(path)}" );
         }
 
@@ -234,14 +232,14 @@ namespace ClipboardImageCollectForm
 
 
 
-        private const int LOG_LIMMIT_LEN = 20;
+        private const int LOG_LIMMIT = 20;
 
-        private void Log(LogType type, string message)
+        private void Log(LogType type, string message, string details = "")
         {
-            this.logger.Push( type, message );
+            this.logger.Push( type, message, details );
 
             // リミット制御
-            if ( LOG_LIMMIT_LEN < this.logger.Count )
+            if ( LOG_LIMMIT < this.logger.Count )
             {
                 this.logger.Pop();
             }

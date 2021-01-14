@@ -5,14 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfLogComponent"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" Margin="0,0,0,5">
     <Grid>
         <Label x:Name="LabelTimestamp" Content="[hh:mm:ss]" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}"
-                FontFamily="MS Gothic" Margin="0,5,0,0"/>
-        <Label x:Name="LabelLogType" Content="[log-type]" HorizontalAlignment="Left" Margin="0,22,0,0" VerticalAlignment="Top" Foreground="Red"
                 FontFamily="MS Gothic"/>
-        <TextBlock x:Name="TextMessage" HorizontalAlignment="Left" Margin="80,9,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="16" Foreground="#FF89FFCB"
+        <Label x:Name="LabelLogType" Content="[log-type]" HorizontalAlignment="Left" Margin="0,17,0,0" VerticalAlignment="Top" Foreground="Red"
+                FontFamily="MS Gothic"/>
+        <TextBlock x:Name="TextMessage" HorizontalAlignment="Left" Margin="91,5,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Foreground="#FF89FFCB"
                    FontFamily="MS Gothic" FontWeight="Bold"/>
+        <TextBlock x:Name="TextDetails" HorizontalAlignment="Left" Margin="91,19,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Foreground="#FF89FFCB"
+            FontFamily="MS Gothic"/>
 
     </Grid>
 </UserControl>
