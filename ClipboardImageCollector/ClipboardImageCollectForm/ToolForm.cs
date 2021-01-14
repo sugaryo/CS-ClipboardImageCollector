@@ -221,6 +221,9 @@ namespace ClipboardImageCollectForm
             {
                 this.logger.Pop();
             }
+
+            // スクロール表示
+            this.logger.ScrollToEnd();
         }
     }
 }

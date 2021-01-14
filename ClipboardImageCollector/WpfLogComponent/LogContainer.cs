@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace WpfLogComponent
 {
@@ -14,6 +15,8 @@ namespace WpfLogComponent
 
         public int Count { get { return this.Panel.Children.Count; } }
 
+        private readonly DispatcherTimer timer;
+
         #region ctor
         public LogContainer()
         {
@@ -22,13 +25,27 @@ namespace WpfLogComponent
 
             this.View.Content = this.Panel;
             this.View.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+
+            // 疑似アニメーションスクロールの為のタイマー
+            this.timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds( 5 );
+            timer.Tick += (s, args) =>
+            {
+                // スクロール移動
+                this.View.ScrollToVerticalOffset( this.View.VerticalOffset + 10 );
+
+                // スクロール限界に来たらタイマーストップ。
+                if ( this.View.ScrollableHeight <= this.View.VerticalOffset )
+                {
+                    timer.Stop();
+                }
+            };
         }
         #endregion
 
         public void Push(LogType type, string message)
         {
             Panel.Children.Add( new LogItem( type, message ) );
-            this.View.ScrollToEnd();
         }
 
         public void Pop()
@@ -37,6 +54,11 @@ namespace WpfLogComponent
             {
                 this.Panel.Children.RemoveAt( 0 );
             }
+        }
+
+        public void ScrollToEnd()
+        {
+            timer.Start();
         }
 
         public void Clear()
