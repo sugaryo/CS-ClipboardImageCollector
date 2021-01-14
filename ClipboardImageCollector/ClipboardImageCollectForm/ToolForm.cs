@@ -91,11 +91,46 @@ namespace ClipboardImageCollectForm
                 menu.Items.Add( item );
             }
             #endregion
+
+#if DEBUG
+            {
+                void ThrowEx()
+                {
+                    throw new Exception( "例外発生の実験" );
+                };
+
+                var item = new ToolStripMenuItem();
+                item.Text = "ERROR";
+                item.ForeColor = Color.Red;
+                item.Click += (x, _) => {
+                    try
+                    {
+                        ThrowEx();
+                    }
+                    catch ( Exception ex )
+                    {
+                        this.Log( LogType.Error, ex.Message, ex.StackTrace );
+                    }
+                };
+                menu.Items.Add( item );
+            }
+            {
+                var item = new ToolStripMenuItem();
+                item.Text = "TEST";
+                item.Click += (x, _) => {
+                    
+                    this.Log( LogType.Warn, "hogehoge mogemoge piyopiyo:", @"hogehoge
+mogemoge
+piyopiyo");
+                };
+                menu.Items.Add( item );
+            }
+#endif
         }
         private void ToolForm_Shown(object sender, EventArgs e)
         {
             // 画面をロードした時に save フォルダを用意しておく。
-            #region saveフォルダの作成
+#region saveフォルダの作成
             {
 #warning デフォルトで相対 /save でいいとして、後で app.config で出力先を指定出来るようにしたいね。
 
@@ -108,13 +143,13 @@ namespace ClipboardImageCollectForm
                     this.Log( LogType.Info, "folder created." );
                 }
             }
-            #endregion
+#endregion
         }
-        #endregion
+#endregion
 
 
         // Window Proc.
-        #region override WndProc
+#region override WndProc
         protected override void WndProc(ref Message m)
         {
             // 参考実装
@@ -132,10 +167,10 @@ namespace ClipboardImageCollectForm
 
             base.WndProc( ref m );
         }
-        #endregion
+#endregion
 
 
-        #region OnClipboardChanged
+#region OnClipboardChanged
         private void OnClipboardChanged()
         {
             if ( Clipboard.ContainsImage() )
@@ -228,7 +263,7 @@ $@"- size : {img.Size}
             }
             return null;
         }
-        #endregion
+#endregion
 
 
 
