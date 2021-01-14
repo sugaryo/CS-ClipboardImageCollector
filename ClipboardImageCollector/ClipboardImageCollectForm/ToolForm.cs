@@ -162,6 +162,7 @@ piyopiyo");
                 catch ( Exception ex )
                 {
                     this.Log( LogType.Error, ex.Message, ex.StackTrace );
+                    this.Activate();
                 }
             }
 
