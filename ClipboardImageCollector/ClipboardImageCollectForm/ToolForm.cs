@@ -22,6 +22,16 @@ namespace ClipboardImageCollectForm
 
         private readonly LogContainer logger;
 
+        public string SaveFolder
+        {
+            get
+            {
+                string exe = Application.ExecutablePath;
+                string dir = Path.Combine( Directory.GetParent( exe ).FullName, "save" );
+
+                return dir;
+            }
+        }
 
         #region ctor / Load
         public ToolForm()
@@ -62,6 +72,25 @@ namespace ClipboardImageCollectForm
                 menu.Items.Add( item );
             }
             #endregion
+
+            #region 開く メニュー
+            {
+                var item = new ToolStripMenuItem();
+                item.Text = "開く";
+                item.Click += (x, _) => {
+                    if ( Directory.Exists( this.SaveFolder ) )
+                    {
+                        System.Diagnostics.Process.Start( "EXPLORER.EXE", this.SaveFolder );
+                    }
+                    else
+                    {
+                        // 無いなら今作っちゃっても良い気がするけどね。
+                        this.Log( LogType.Warn, "保存先フォルダがありません。" );
+                    }
+                };
+                menu.Items.Add( item );
+            }
+            #endregion
         }
         private void ToolForm_Shown(object sender, EventArgs e)
         {
@@ -69,16 +98,11 @@ namespace ClipboardImageCollectForm
             #region saveフォルダの作成
             {
 #warning デフォルトで相対 /save でいいとして、後で app.config で出力先を指定出来るようにしたいね。
-                string exe = Application.ExecutablePath;
-                string dir = Path.Combine( Directory.GetParent( exe ).FullName, "save" );
 
-
-                this.Log( LogType.Info, $@"exe:
-- {exe}" );
                 this.Log( LogType.Info, $@"folder:
-- {dir}" );
+- {this.SaveFolder}" );
 
-                DirectoryInfo di = new DirectoryInfo( dir );
+                DirectoryInfo di = new DirectoryInfo( this.SaveFolder );
                 if ( !di.Exists )
                 {
                     di.Create();
