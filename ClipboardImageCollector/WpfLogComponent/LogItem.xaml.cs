@@ -46,6 +46,7 @@ namespace WpfLogComponent
                     this.LabelLogType.Content = "[WARN]";
                     this.LabelLogType.Foreground = Brushes.OrangeRed;
                     this.TextMessage.Foreground = Brushes.OrangeRed;
+                    this.TextDetails.Foreground = Brushes.OrangeRed;
                     break;
 
                 case LogType.Error:
@@ -53,6 +54,7 @@ namespace WpfLogComponent
                     this.LabelLogType.Content = "[ERROR]";
                     this.LabelLogType.Foreground = Brushes.Red;
                     this.TextMessage.Foreground = Brushes.Red;
+                    this.TextDetails.Foreground = Brushes.Red;
                     break;
 
                 default:
