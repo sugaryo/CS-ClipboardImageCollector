@@ -44,9 +44,9 @@ namespace WpfLogComponent
                 case LogType.Warn:
                     // this.Background = Brushes.Orange;
                     this.LabelLogType.Content = "[WARN]";
-                    this.LabelLogType.Foreground = Brushes.OrangeRed;
-                    this.TextMessage.Foreground = Brushes.OrangeRed;
-                    this.TextDetails.Foreground = Brushes.OrangeRed;
+                    this.LabelLogType.Foreground = Brushes.Orange;
+                    this.TextMessage.Foreground = Brushes.Orange;
+                    this.TextDetails.Foreground = Brushes.Orange;
                     break;
 
                 case LogType.Error:
