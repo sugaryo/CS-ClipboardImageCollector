@@ -20,9 +20,9 @@ namespace WpfLogComponent
         #region ctor
         public LogContainer()
         {
-            this.View = new ScrollViewer();
+            // View-Panel の生成
             this.Panel = new StackPanel();
-
+            this.View = new ScrollViewer();
             this.View.Content = this.Panel;
             this.View.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
 
@@ -58,7 +58,21 @@ namespace WpfLogComponent
 
         public void ScrollToEnd()
         {
-            timer.Start();
+            if ( this.View.VerticalOffset < this.View.ScrollableHeight )
+            {
+                double d = this.View.ScrollableHeight - this.View.VerticalOffset;
+
+                // 末尾までの差分が少ない場合はタイマー使わずBottomに直行させる。
+                if ( d < 10 )
+                {
+                    this.View.ScrollToBottom();
+                }
+                // ある程度距離がある場合はタイマーで動かして疑似アニメーション。
+                else
+                {
+                    timer.Start();
+                }
+            }
         }
 
         public void Clear()
