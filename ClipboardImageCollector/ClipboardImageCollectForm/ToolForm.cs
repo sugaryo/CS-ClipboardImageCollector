@@ -35,16 +35,14 @@ namespace ClipboardImageCollectForm
 
         private bool AutoClear { get; set; } = true;
 
-        #region ctor / Load
+
+        #region ctor/Load/Shown
         public ToolForm()
         {
             InitializeComponent();
 
             this.logger = new LogContainer();
         }
-
-
-        #region Load/Shown
         private void ToolForm_Load(object sender, EventArgs e)
         {
             // WPF ElementHost
@@ -180,7 +178,6 @@ piyopiyo");
         }
         #endregion
 
-        #endregion
 
 
         // Window Proc.
@@ -301,7 +298,8 @@ $@"- size : {img.Size}
         #endregion
 
 
-
+        // UI Log
+        #region UILog制御
         private const int LOG_LIMMIT = 25;
 
         private void Log(LogType type, string message, string details = "")
@@ -311,9 +309,7 @@ $@"- size : {img.Size}
 
             // ログデータを追加。
             this.logger.Push( type, message, details );
-
-#warning 一定数Pushしたらスクロールアニメーションが機能しなくなるので対策を考える。
-
+            
             // スクロール表示
             this.logger.ScrollToEnd();
         }
@@ -327,5 +323,7 @@ $@"- size : {img.Size}
                 this.logger.Clear();
             }
         }
+        #endregion
+
     }
 }
