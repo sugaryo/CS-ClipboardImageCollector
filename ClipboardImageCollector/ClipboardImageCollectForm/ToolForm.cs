@@ -280,6 +280,8 @@ $@"- size : {img.Size}
                 this.logger.Pop();
             }
 
+#warning 一定数Pushしたらスクロールアニメーションが機能しなくなるので対策を考える。
+
             // スクロール表示
             this.logger.ScrollToEnd();
         }
