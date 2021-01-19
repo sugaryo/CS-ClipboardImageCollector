@@ -75,7 +75,6 @@ namespace ClipboardImageCollectForm
                 menu.Items.Add( item );
 
                 // 初期設定
-                this.TopMost = false;
                 OnTopMostChanged( item );
             }
             #endregion
@@ -90,7 +89,6 @@ namespace ClipboardImageCollectForm
                 menu.Items.Add( item );
 
                 // 初期設定
-                this.AutoClear = true;
                 OnAutoClearChanged( item );
             }
             {
@@ -106,7 +104,7 @@ namespace ClipboardImageCollectForm
             #region 開く メニュー
             {
                 var item = new ToolStripMenuItem();
-                item.Text = "開く";
+                item.Text = "保存先を開く";
                 item.Click += (x, _) => {
                     if ( Directory.Exists( this.SaveFolder ) )
                     {
