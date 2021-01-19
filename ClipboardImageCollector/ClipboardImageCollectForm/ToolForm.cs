@@ -33,6 +33,8 @@ namespace ClipboardImageCollectForm
             }
         }
 
+        private bool AutoClear { get; set; } = true;
+
         #region ctor / Load
         public ToolForm()
         {
@@ -41,11 +43,26 @@ namespace ClipboardImageCollectForm
             this.logger = new LogContainer();
         }
 
+
+        #region Load/Shown
         private void ToolForm_Load(object sender, EventArgs e)
         {
             // WPF ElementHost
             this.wpfElementHost.Child = this.logger.View;
 
+
+            // メニュー用のハンドラ（ローカルメソッド）
+            void OnTopMostChanged(ToolStripMenuItem item)
+            {
+                item.Text      = this.TopMost ? "最前面に表示 ✅" : "最前面に表示";
+                item.ForeColor = this.TopMost ? Color.Black : Color.Gray;
+            }
+
+            void OnAutoClearChanged(ToolStripMenuItem item)
+            {
+                item.Text      = this.AutoClear ? "ログを自動消去 ✅" : "ログを自動消去";
+                item.ForeColor = this.AutoClear ? Color.Black : Color.Gray;
+            }
 
             // メニュー部分を生成する
             var menu = new MenuStrip();
@@ -53,16 +70,31 @@ namespace ClipboardImageCollectForm
             #region TopMost メニュー
             {
                 var item = new ToolStripMenuItem();
-                item.Text = "最前面に表示";
-                item.Click += ( x, _ )=> { 
+                item.Click += ( x, _ )=> {
                     this.TopMost = !this.TopMost;
-                    item.Text = this.TopMost ? "最前面に表示 ✅" : "最前面に表示";
+                    OnTopMostChanged( item );
                 };
                 menu.Items.Add( item );
+
+                // 初期設定
+                this.TopMost = false;
+                OnTopMostChanged( item );
             }
             #endregion
 
             #region Clear log メニュー
+            {
+                var item = new ToolStripMenuItem();
+                item.Click += (x, _) => {
+                    this.AutoClear = !this.AutoClear;
+                    OnAutoClearChanged( item );
+                };
+                menu.Items.Add( item );
+
+                // 初期設定
+                this.AutoClear = true;
+                OnAutoClearChanged( item );
+            }
             {
                 var item = new ToolStripMenuItem();
                 item.Text = "ログ消去";
@@ -101,7 +133,7 @@ namespace ClipboardImageCollectForm
 
                 var item = new ToolStripMenuItem();
                 item.Text = "ERROR";
-                item.ForeColor = Color.Red;
+                item.ForeColor = Color.OrangeRed;
                 item.Click += (x, _) => {
                     try
                     {
@@ -117,6 +149,7 @@ namespace ClipboardImageCollectForm
             {
                 var item = new ToolStripMenuItem();
                 item.Text = "TEST";
+                item.ForeColor = Color.OrangeRed;
                 item.Click += (x, _) => {
                     
                     this.Log( LogType.Warn, "hogehoge mogemoge piyopiyo:", @"hogehoge
@@ -145,11 +178,13 @@ piyopiyo");
             }
 #endregion
         }
-#endregion
+        #endregion
+
+        #endregion
 
 
         // Window Proc.
-#region override WndProc
+        #region override WndProc
         protected override void WndProc(ref Message m)
         {
             // 参考実装
@@ -170,8 +205,7 @@ piyopiyo");
         }
 #endregion
 
-
-#region OnClipboardChanged
+        #region OnClipboardChanged
         private void OnClipboardChanged()
         {
             if ( Clipboard.ContainsImage() )
@@ -264,24 +298,32 @@ $@"- size : {img.Size}
             }
             return null;
         }
-#endregion
+        #endregion
 
 
 
-        private const int LOG_LIMMIT = 20;
+        private const int LOG_LIMMIT = 25;
 
         private void Log(LogType type, string message, string details = "")
         {
-            this.logger.Push( type, message, details );
-
             // リミット制御
-            if ( LOG_LIMMIT < this.logger.Count )
-            {
-                this.logger.Pop();
-            }
+            this.LogAutoClear();
+
+            // ログデータを追加。
+            this.logger.Push( type, message, details );
 
             // スクロール表示
             this.logger.ScrollToEnd();
+        }
+
+        private void LogAutoClear()
+        {
+            if ( !this.AutoClear ) return;
+
+            if ( LOG_LIMMIT <= this.logger.Count )
+            {
+                this.logger.Clear();
+            }
         }
     }
 }
