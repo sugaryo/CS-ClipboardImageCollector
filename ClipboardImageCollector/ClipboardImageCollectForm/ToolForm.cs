@@ -26,10 +26,21 @@ namespace ClipboardImageCollectForm
         {
             get
             {
-                string exe = Application.ExecutablePath;
-                string dir = Path.Combine( Directory.GetParent( exe ).FullName, "save" );
+#warning IsPathRooted は嫌いなので .NET6 にして IsPathFullyQualified を使いたい。
+                string path = Tool.Default.SaveFolder;
+                if ( Path.IsPathRooted( path ) && Directory.Exists(path) )
+                {
+                    // 取り敢えず、絶対パスで存在するフォルダが指定されたらそこを使う。
+                    return Path.GetFullPath( path );
+                }
+                else
+                {
+                    // 存在するフォルダ以外が指定されたら、相対パスとして扱う。
+                    string exe = Application.ExecutablePath;
+                    string dir = Path.Combine( Directory.GetParent( exe ).FullName, path );
 
-                return dir;
+                    return dir;
+                }
             }
         }
 
