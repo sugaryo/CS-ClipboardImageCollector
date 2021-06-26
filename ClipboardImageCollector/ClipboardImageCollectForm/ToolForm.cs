@@ -28,7 +28,7 @@ namespace ClipboardImageCollectForm
             {
 #warning IsPathRooted は嫌いなので .NET6 にして IsPathFullyQualified を使いたい。
                 string path = Tool.Default.SaveFolder;
-                if ( Path.IsPathRooted( path ) && Directory.Exists(path) )
+                if ( Path.IsPathRooted( path ) && Directory.Exists( path ) )
                 {
                     // 取り敢えず、絶対パスで存在するフォルダが指定されたらそこを使う。
                     return Path.GetFullPath( path );
@@ -242,8 +242,7 @@ piyopiyo");
 
         private string CreateUniquePath(int retry = 2)
         {
-            string exe = Application.ExecutablePath;
-            string dir = Path.Combine( Directory.GetParent( exe ).FullName, "save" );
+            string dir = this.SaveFolder;
 
 
             // 秒までのタイムスタンプと、GUIDベース（UUIDv4相当）で生成したランダムIDでファイル名にしとく。
