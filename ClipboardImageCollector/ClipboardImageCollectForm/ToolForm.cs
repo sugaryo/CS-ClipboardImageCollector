@@ -159,10 +159,8 @@ piyopiyo");
         private void ToolForm_Shown(object sender, EventArgs e)
         {
             // 画面をロードした時に save フォルダを用意しておく。
-#region saveフォルダの作成
+            #region saveフォルダの作成
             {
-#warning デフォルトで相対 /save でいいとして、後で app.config で出力先を指定出来るようにしたいね。
-
                 this.Log( LogType.Info, "folder:", $"- {this.SaveFolder}" );
 
                 DirectoryInfo di = new DirectoryInfo( this.SaveFolder );
@@ -172,7 +170,7 @@ piyopiyo");
                     this.Log( LogType.Info, "folder created." );
                 }
             }
-#endregion
+            #endregion
         }
         #endregion
 
