@@ -40,7 +40,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 450);
+            this.panel1.Size = new System.Drawing.Size(464, 501);
             this.panel1.TabIndex = 0;
             // 
             // wpfElementHost
@@ -49,7 +49,7 @@
             this.wpfElementHost.Dock = System.Windows.Forms.DockStyle.Fill;
             this.wpfElementHost.Location = new System.Drawing.Point(0, 0);
             this.wpfElementHost.Name = "wpfElementHost";
-            this.wpfElementHost.Size = new System.Drawing.Size(798, 448);
+            this.wpfElementHost.Size = new System.Drawing.Size(462, 499);
             this.wpfElementHost.TabIndex = 0;
             this.wpfElementHost.Text = "elementHost1";
             this.wpfElementHost.Child = null;
@@ -58,7 +58,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(464, 501);
             this.Controls.Add(this.panel1);
             this.Name = "ToolForm";
             this.Text = "clipboard image collector";

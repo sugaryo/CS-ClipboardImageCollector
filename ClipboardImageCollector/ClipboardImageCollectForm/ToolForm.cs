@@ -76,6 +76,7 @@ namespace ClipboardImageCollectForm
             // メニュー部分を生成する
             var menu = new MenuStrip();
             this.Controls.Add( menu );
+
             #region TopMost メニュー
             {
                 var item = new ToolStripMenuItem();
@@ -86,6 +87,7 @@ namespace ClipboardImageCollectForm
                 menu.Items.Add( item );
 
                 // 初期設定
+                this.TopMost = true;
                 OnTopMostChanged( item );
             }
             #endregion
@@ -100,6 +102,7 @@ namespace ClipboardImageCollectForm
                 menu.Items.Add( item );
 
                 // 初期設定
+                this.AutoClear = true;
                 OnAutoClearChanged( item );
             }
             {
